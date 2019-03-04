@@ -84,7 +84,7 @@ func main() {
 		var interfaces pfconfigdriver.ListenInts
 		pfconfigdriver.FetchDecodeSocket(ctx, &interfaces)
 		for {
-			DHCPConfig.detectVIP(append(interfaces.Element, DHCPinterfaces.Element...))
+			DHCPConfig.detectVIP(sharedutils.RemoveDuplicates(append(interfaces.Element, DHCPinterfaces.Element...)))
 
 			time.Sleep(3 * time.Second)
 		}
