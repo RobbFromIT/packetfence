@@ -85,7 +85,7 @@ use pf::constants::config qw(
   $WEBAUTH
   $WEBAUTH_WIRED
   $WEBAUTH_WIRELESS
-    
+
   $WIRELESS
   $WIRED
   $EAP
@@ -106,7 +106,7 @@ use pf::util;
 our (
     @listen_ints, @dhcplistener_ints, @ha_ints, $monitor_int,
     @internal_nets, @routed_isolation_nets, @routed_registration_nets, @inline_nets, @portal_ints,@radius_ints,
-    @inline_enforcement_nets, @vlan_enforcement_nets, $management_network, @dhcpd_ints, @dns_ints,
+    @inline_enforcement_nets, @vlan_enforcement_nets, $management_network, @dhcp_ints, @dns_ints,
 #pf.conf.default variables
     %Default_Config,
 #pf.conf variables
@@ -179,7 +179,7 @@ BEGIN {
     @EXPORT_OK = qw(
         @listen_ints @dhcplistener_ints @ha_ints $monitor_int
         @internal_nets @routed_isolation_nets @routed_registration_nets @inline_nets $management_network @portal_ints @radius_ints
-        @inline_enforcement_nets @vlan_enforcement_nets @dhcpd_ints @dns_ints
+        @inline_enforcement_nets @vlan_enforcement_nets @dhcp_ints @dns_ints
         $IPTABLES_MARK_UNREG $IPTABLES_MARK_REG $IPTABLES_MARK_ISOLATION
         %mark_type_to_str %mark_type
         $MAC $PORT $SSID $ALWAYS
@@ -247,7 +247,7 @@ tie @inline_enforcement_nets, 'pfconfig::cached_array', "interfaces::inline_enfo
 tie @internal_nets, 'pfconfig::cached_array', "interfaces::internal_nets($host_id)";
 tie @portal_ints, 'pfconfig::cached_array', "interfaces::portal_ints($host_id)";
 tie @radius_ints, 'pfconfig::cached_array', "interfaces::radius_ints($host_id)";
-tie @dhcpd_ints, 'pfconfig::cached_array', "interfaces::dhcpd_ints($host_id)";
+tie @dhcp_ints, 'pfconfig::cached_array', "interfaces::dhcp_ints($host_id)";
 tie @dns_ints, 'pfconfig::cached_array', "interfaces::dns_ints($host_id)";
 tie @vlan_enforcement_nets, 'pfconfig::cached_array', "interfaces::vlan_enforcement_nets($host_id)";
 tie $management_network, 'pfconfig::cached_scalar', "interfaces::management_network($host_id)";
