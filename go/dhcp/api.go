@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/binary"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -296,13 +297,13 @@ func handleRemoveNetworkOptions(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func decodeOptions(b string) (map[dhcp.OptionCode][]byte, bool) {
+func decodeOptions(b string) (map[dhcp.OptionCode][]byte, error) {
 	var options []Options
 	_, value := MysqlGet(b)
 	decodedValue := sharedutils.ConvertToByte(value)
 	var dhcpOptions = make(map[dhcp.OptionCode][]byte)
 	if err := json.Unmarshal(decodedValue, &options); err != nil {
-		return dhcpOptions, false
+		return dhcpOptions, errors.New("Unable to decode the option")
 	}
 	for _, option := range options {
 		var Value interface{}
@@ -318,7 +319,7 @@ func decodeOptions(b string) (map[dhcp.OptionCode][]byte, bool) {
 			dhcpOptions[option.Option] = []byte(Value.(string))
 		}
 	}
-	return dhcpOptions, true
+	return dhcpOptions, nil
 }
 
 func (h *Interface) handleApiReq(Request ApiReq) interface{} {
@@ -344,7 +345,7 @@ func (h *Interface) handleApiReq(Request ApiReq) interface{} {
 
 			// Add network options on the fly
 			x, err := decodeOptions(v.network.IP.String())
-			if err {
+			if err == nil {
 				for key, value := range x {
 					Options[key.String()] = Tlv.Tlvlist[int(key)].Transform.String(value)
 				}

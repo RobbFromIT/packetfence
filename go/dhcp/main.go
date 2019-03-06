@@ -164,9 +164,9 @@ func main() {
 	http.Handle("/", httpauth.SimpleBasicAuth(webservices.User, webservices.Pass)(router))
 
 	srv := &http.Server{
-		Addr:         "127.0.0.1:22222",
-		IdleTimeout:  5 * time.Second,
-		Handler:      router,
+		Addr:        "127.0.0.1:22222",
+		IdleTimeout: 5 * time.Second,
+		Handler:     router,
 	}
 
 	// Systemd
@@ -477,8 +477,8 @@ func (h *Interface) ServeDHCP(ctx context.Context, p dhcp.Packet, msgType dhcp.M
 			leaseDuration := handler.leaseDuration
 
 			// Add network options on the fly
-			x, erreur := decodeOptions(NetScope.IP.String())
-			if erreur {
+			x, err := decodeOptions(NetScope.IP.String())
+			if err == nil {
 				for key, value := range x {
 					if key == dhcp.OptionIPAddressLeaseTime {
 						seconds, _ := strconv.Atoi(string(value))
@@ -505,8 +505,8 @@ func (h *Interface) ServeDHCP(ctx context.Context, p dhcp.Packet, msgType dhcp.M
 			}
 
 			// Add device (mac) options on the fly
-			x, erreur = decodeOptions(p.CHAddr().String())
-			if erreur {
+			x, err = decodeOptions(p.CHAddr().String())
+			if err == nil {
 				for key, value := range x {
 					if key == dhcp.OptionIPAddressLeaseTime {
 						seconds, _ := strconv.Atoi(string(value))
@@ -627,8 +627,8 @@ func (h *Interface) ServeDHCP(ctx context.Context, p dhcp.Packet, msgType dhcp.M
 					leaseDuration := handler.leaseDuration
 
 					// Add network options on the fly
-					x, erreur := decodeOptions(NetScope.IP.String())
-					if erreur {
+					x, err := decodeOptions(NetScope.IP.String())
+					if err == nil {
 						for key, value := range x {
 							if key == dhcp.OptionIPAddressLeaseTime {
 								seconds, _ := strconv.Atoi(string(value))
@@ -640,8 +640,8 @@ func (h *Interface) ServeDHCP(ctx context.Context, p dhcp.Packet, msgType dhcp.M
 					}
 
 					// Add devices options on the fly
-					x, erreur = decodeOptions(p.CHAddr().String())
-					if erreur {
+					x, err = decodeOptions(p.CHAddr().String())
+					if err == nil {
 						for key, value := range x {
 							if key == dhcp.OptionIPAddressLeaseTime {
 								seconds, _ := strconv.Atoi(string(value))
