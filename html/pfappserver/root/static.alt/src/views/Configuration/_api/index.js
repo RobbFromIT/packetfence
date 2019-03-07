@@ -55,6 +55,11 @@ export default {
       return response.data.item
     })
   },
+  baseOptions: id => {
+    return apiCall.options(`config/base/${id}`).then(response => {
+      return response.data
+    })
+  },
   updateBase: data => {
     return apiCall.patch(`config/base/${data.id}`, data).then(response => {
       return response.data
@@ -313,7 +318,7 @@ export default {
     })
   },
   updateSwitch: data => {
-    return apiCall.patch(`config/switch/${data.encodeURIComponent(data.id)}`, data).then(response => {
+    return apiCall.patch(`config/switch/${encodeURIComponent(data.id)}`, data).then(response => {
       return response.data
     })
   },
@@ -349,7 +354,7 @@ export default {
     })
   },
   updateSwitchGroup: data => {
-    return apiCall.patch(`config/switch_group/${data.encodeURIComponent(data.id)}`, data).then(response => {
+    return apiCall.patch(`config/switch_group/${encodeURIComponent(data.id)}`, data).then(response => {
       return response.data
     })
   },
